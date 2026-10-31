@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YTA | YouTube Automation Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+      <div class="brand-logo">
+        <div class="yt-play-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </div>
+        <span class="brand-title">YTA</span>
+      </div>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Navigation">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <div class="brand-logo" onclick="navigateTo('view-home')">
+          <div class="yt-play-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+          </div>
+          <span class="brand-title">YTA</span>
+          <span class="brand-badge">PRO</span>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="nav-item active" data-view="view-home">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span>Home & Explore</span>
+          </button>
+
+
+          <button class="nav-item" data-view="view-niche">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span>Niche Research</span>
+          </button>
+
+          <button class="nav-item" data-view="view-audit">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            <span>Channel Audit</span>
+          </button>
+
+          <button class="nav-item" data-view="view-software">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+            </svg>
+            <span>YouTube Software</span>
+          </button>
+
+          <button class="nav-item" data-view="view-courses">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <span>Masterclass</span>
+          </button>
+
+          <button class="nav-item" data-view="view-settings">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            <span>Settings</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Currency Selector -->
+      <div class="sidebar-currency-card">
+        <div class="currency-header-row">
+          <span class="currency-label-clean">Currency</span>
+          <span class="currency-badge-bachs">Bachs</span>
+        </div>
+        <select id="appCurrencySelect" class="currency-select-box" onchange="changeAppCurrency(this.value)">
+          <option value="USD" selected>🇺🇸 USD ($)</option>
+          <option value="NGN">🇳🇬 NGN (₦)</option>
+          <option value="KES">🇰🇪 KES (KSh)</option>
+          <option value="GHS">🇬🇭 GHS (GH₵)</option>
+          <option value="ZMW">🇿🇲 ZMW (ZK)</option>
+          <option value="UGX">🇺🇬 UGX (USh)</option>
+          <option value="TZS">🇹🇿 TZS (TSh)</option>
+          <option value="RWF">🇷🇼 RWF (RF)</option>
+          <option value="GBP">🇬🇧 GBP (£)</option>
+          <option value="EUR">🇪🇺 EUR (€)</option>
+        </select>
+      </div>
+
+      <!-- Bottom Card in Sidebar (Adaptive) -->
+      <div class="sidebar-bottom">
+        <div class="sidebar-credit-card" id="sidebarAccountCard">
+          <div class="card-credit-header">
+            <span class="pro-text" id="sidebarAccountStatus">Guest Mode</span>
+            <span class="credit-counter" id="sidebarAccountCounter">Explore Free</span>
+          </div>
+          <div class="credit-progress-bar">
+            <div class="credit-progress-fill" id="sidebarAccountProgress" style="width: 30%;"></div>
+          </div>
+          <p class="credit-subtext" id="sidebarAccountSubtext">Sign up to buy &amp; unlock tools</p>
+          <button class="sidebar-action-btn" id="sidebarAccountBtn" onclick="navigateTo('view-settings')">Create Free Account</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebarMobile()"></div>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- ============================================== -->
+      <!-- VIEW 1: HOME & EXPLORE (Landing Page)           -->
+      <!-- ============================================== -->
+      <section id="view-home" class="page-view active">
+        <!-- Hero Red Banner -->
+        <div class="hero-red-card">
+          <div class="hero-text-content">
+            <span class="pill-badge-white">NEW: CHANNEL AUDIT 2.0</span>
+            <h1 class="hero-title">Scale Your YouTube Empire with Data</h1>
+            <p class="hero-desc">The all-in-one suite for niche research, channel health diagnosis, and automated content strategy.</p>
+            <div class="hero-actions">
+              <button class="btn-dark-pill" onclick="navigateTo('view-audit')">Start Free Audit</button>
+              <button class="btn-outline-white-pill" onclick="navigateTo('view-courses')">Browse Courses</button>
+            </div>
+          </div>
+          <div class="hero-visual-card">
+            <div class="hero-graphic-box">
+              <svg class="sparkle-trend-icon" viewBox="0 0 100 80" fill="none">
+                <!-- Trend line -->
+                <path d="M15 65 Q 40 50, 50 35 T 85 15" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>
+                <!-- Glowing node circles -->
+                <circle cx="15" cy="65" r="4.5" fill="currentColor"/>
+                <circle cx="50" cy="35" r="5" fill="currentColor"/>
+                <circle cx="85" cy="15" r="5.5" fill="currentColor"/>
+                <!-- Sparkles -->
+                <path d="M72 38 L75 30 L78 38 L86 41 L78 44 L75 52 L72 44 L64 41 Z" fill="currentColor"/>
+                <path d="M28 25 L30 19 L32 25 L38 27 L32 29 L30 35 L28 29 L22 27 Z" fill="currentColor"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Automation Solutions -->
+        <div class="section-container">
+          <h2 class="section-title">Automation Solutions</h2>
+          <div class="solution-grid">
+            <div class="solution-card" onclick="navigateTo('view-niche')">
+              <div class="solution-icon-box bg-red-sq">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </div>
+              <span class="solution-category">Market Intelligence</span>
+              <h3 class="solution-heading">Niche Finder</h3>
+              <a href="javascript:void(0)" class="solution-link">Explore &rarr;</a>
+            </div>
+
+            <div class="solution-card" onclick="navigateTo('view-audit')">
+              <div class="solution-icon-box bg-green-sq">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </div>
+              <span class="solution-category">Health &amp; SEO</span>
+              <h3 class="solution-heading">Channel Auditor</h3>
+              <a href="javascript:void(0)" class="solution-link">Explore &rarr;</a>
+            </div>
+
+            <div class="solution-card" onclick="navigateTo('view-software')">
+              <div class="solution-icon-box bg-coral-sq">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </div>
+              <span class="solution-category">Content Generation</span>
+              <h3 class="solution-heading">Viral Scripting</h3>
+              <a href="javascript:void(0)" class="solution-link">Explore &rarr;</a>
+            </div>
+
+            <div class="solution-card" onclick="navigateTo('view-software')">
+              <div class="solution-icon-box bg-blue-sq">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </div>
+              <span class="solution-category">Creator Tools</span>
+              <h3 class="solution-heading">Software Hub</h3>
+              <a href="javascript:void(0)" class="solution-link">Explore &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Validate Your Next Big Idea -->
+        <div class="validation-split-card">
+          <div class="validation-left">
+            <h2 class="card-main-title">Validate Your Next Big Idea</h2>
+            <p class="card-main-desc">Enter a niche to see competition levels, average CPM, and trending topics gathered from real-time YouTube API data.</p>
+            
+            <label class="form-label">Niche Keyword</label>
+            <div class="search-input-group">
+              <div class="search-field-wrapper">
+                <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="quickNicheInput" class="search-input-box" placeholder="e.g. Faceless Finance, ASMR Cooking" value="Faceless Finance">
+              </div>
+              <button class="btn-primary-red" onclick="quickAnalyzeNiche()">Analyze</button>
+            </div>
+
+            <div class="quick-pills-row">
+              <button class="quick-pill" onclick="setNicheInput('Finance')">
+                <span class="pill-symbol">$</span> Finance: $12.50 CPM
+              </button>
+              <button class="quick-pill" onclick="setNicheInput('Gaming')">
+                <span class="pill-symbol">🎮</span> Gaming: High Vol
+              </button>
+              <button class="quick-pill" onclick="setNicheInput('Tech')">
+                <span class="pill-symbol">⚙️</span> Tech: Low Comp
+              </button>
+            </div>
+          </div>
+
+          <div class="validation-right">
+            <div class="sentiment-container">
+              <h4 class="sentiment-title">Market Sentiment</h4>
+              <div class="donut-chart-box">
+                <svg class="donut-svg" viewBox="0 0 160 160">
+                  <circle cx="80" cy="80" r="58" class="donut-ring-bg"></circle>
+                  <!-- Green Profitable 65% (circumference ~ 364.4) -> 364.4 * 0.65 = 236.8 -->
+                  <circle cx="80" cy="80" r="58" class="donut-segment donut-green" stroke-dasharray="236.8 364.4" stroke-dashoffset="0"></circle>
+                  <!-- Red Saturated 25% -> 364.4 * 0.25 = 91.1 -->
+                  <circle cx="80" cy="80" r="58" class="donut-segment donut-red" stroke-dasharray="91.1 364.4" stroke-dashoffset="-236.8"></circle>
+                  <!-- Orange Emerging 10% -> 364.4 * 0.10 = 36.4 -->
+                  <circle cx="80" cy="80" r="58" class="donut-segment donut-orange" stroke-dasharray="36.4 364.4" stroke-dashoffset="-327.9"></circle>
+                </svg>
+                <div class="donut-center-text">
+                  <span class="center-percentage">88%</span>
+                  <span class="center-sub">Opportunity</span>
+                </div>
+              </div>
+              <div class="sentiment-legend">
+                <div class="legend-item"><span class="dot dot-green"></span> Profitable 65%</div>
+                <div class="legend-item"><span class="dot dot-red"></span> Saturated 25%</div>
+                <div class="legend-item"><span class="dot dot-orange"></span> Emerging 10%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- YTA Academy -->
+        <div class="section-container">
+          <div class="section-header-split">
+            <div>
+              <h2 class="section-title">YTA Academy</h2>
+              <p class="section-subtitle">Learn from creators making $10k+/mo</p>
+            </div>
+            <button class="link-arrow-red" onclick="navigateTo('view-courses')">View All Courses &rarr;</button>
+          </div>
+
+          <div class="course-carousel-grid">
+            <div class="course-card" onclick="openCourseDetails('YouTube Automation Mastery: 0 to $10k', 197)">
+              <div class="course-thumb-wrapper">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=600&q=80" alt="YouTube Automation Mastery" class="course-thumb">
+              </div>
+              <div class="course-card-body">
+                <h3 class="course-title">YouTube Automation Mastery: 0 to $10k</h3>
+                <div class="course-meta-row">
+                  <span class="course-author">Caleb Rivers</span>
+                  <span class="course-price-green" data-usd="197">$197</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="course-card" onclick="handlePurchaseRequest('course', 'Viral Thumbnail Design', 49)">
+              <div class="course-thumb-wrapper">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" alt="Viral Thumbnail Design" class="course-thumb">
+              </div>
+              <div class="course-card-body">
+                <h3 class="course-title">Viral Thumbnail Mastery</h3>
+                <div class="course-meta-row">
+                  <span class="course-author">Sarah Chen</span>
+                  <span class="course-price-green" data-usd="49">$49</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="course-card" onclick="handlePurchaseRequest('course', 'The Faceless Channel Blueprint', 129)">
+              <div class="course-thumb-wrapper">
+                <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=600&q=80" alt="The Faceless Channel Blueprint" class="course-thumb">
+              </div>
+              <div class="course-card-body">
+                <h3 class="course-title">The Faceless Channel Blueprint</h3>
+                <div class="course-meta-row">
+                  <span class="course-author">Dave Miller</span>
+                  <span class="course-price-green" data-usd="129">$129</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="course-card" onclick="openCourseDetails('YouTube Automation Mastery: 0 to $10k', 197)">
+              <div class="course-thumb-wrapper">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Algorithm SEO Deep Dive" class="course-thumb">
+              </div>
+              <div class="course-card-body">
+                <h3 class="course-title">Algorithm SEO Deep Dive</h3>
+                <div class="course-meta-row">
+                  <span class="course-author">YTA Team</span>
+                  <span class="course-price-green font-bold">FREE</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- YouTube Software Suite -->
+        <div class="section-container">
+          <div class="section-header-center">
+            <h2 class="section-title">YouTube Software Suite</h2>
+            <p class="section-subtitle">Tools designed to save you 20+ hours per week</p>
+          </div>
+
+          <div class="software-summary-grid">
+            <div class="software-summary-card">
+              <div class="software-summary-icon bg-cyan-soft">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>
+              </div>
+              <div class="software-summary-info">
+                <h4 class="software-summary-name">ScriptBot Pro</h4>
+                <p class="software-summary-desc">Generate high-retention scripts in seconds.</p>
+              </div>
+              <button class="btn-outline-pill" onclick="handlePurchaseRequest('software', 'ScriptBot Pro', 19)">Add</button>
+            </div>
+
+            <div class="software-summary-card">
+              <div class="software-summary-icon bg-rose-soft">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+              </div>
+              <div class="software-summary-info">
+                <h4 class="software-summary-name">Global Dubber</h4>
+                <p class="software-summary-desc">Translate your videos into 14 languages.</p>
+              </div>
+              <button class="btn-outline-pill" onclick="handlePurchaseRequest('software', 'Global Dubber', 29)">Add</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ============================================== -->
+      <!-- VIEW 3: NICHE RESEARCH (Niche Research Tool)   -->
+      <!-- ============================================== -->
+      <section id="view-niche" class="page-view">
+        <div class="page-header-split">
+          <div>
+            <h1 class="page-headline">Niche Research Tool</h1>
+            <p class="page-subline">Discover high-CPM, low-competition opportunities backed by real-time data.</p>
+          </div>
+          <div class="header-action-group">
+            <button class="btn-dark-pill with-icon" onclick="triggerToast('Viewing 12 Saved Niches')">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+              <span>Saved Niches</span>
+            </button>
+            <button class="btn-outline-pill with-icon" onclick="triggerToast('Exporting CSV & PDF Report...')">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Export Report</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Explore Niche Filter Card -->
+        <div class="niche-filter-card">
+          <label class="form-label">Explore YouTube Niche</label>
+          <div class="search-input-group">
+            <div class="search-field-wrapper">
+              <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="nicheKeywordInput" class="search-input-box" placeholder="Enter a keyword or niche (e.g. Faceless Automation, Personal Finance, Gaming, Crypto)..." value="" onkeydown="if(event.key==='Enter') searchNiches()">
+            </div>
+            <button class="btn-primary-red with-icon" id="nicheSearchBtn" onclick="searchNiches()">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              <span id="nicheSearchBtnText">Analyze Market</span>
+            </button>
+          </div>
+
+          <div style="margin-top: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12.5px; color: #6B7280;">
+            <span style="font-weight: 600;">Trending Niches:</span>
+            <button type="button" class="btn-chip-suggest" onclick="setNicheKeyword('Faceless Automation')">Faceless Automation</button>
+            <button type="button" class="btn-chip-suggest" onclick="setNicheKeyword('Personal Finance')">Personal Finance</button>
+            <button type="button" class="btn-chip-suggest" onclick="setNicheKeyword('Crypto & Web3')">Crypto &amp; Web3</button>
+            <button type="button" class="btn-chip-suggest" onclick="setNicheKeyword('Faceless History')">Faceless History</button>
+            <button type="button" class="btn-chip-suggest" onclick="setNicheKeyword('Home Fitness')">Home Fitness</button>
+          </div>
+        </div>
+
+        <!-- Niche Results Container -->
+        <div id="nicheResultsSection">
+          <!-- Initial Empty State -->
+          <div class="niche-empty-placeholder" id="nicheEmptyState" style="background: #FFFFFF; border: 1.5px dashed #E5E7EB; border-radius: 16px; padding: 48px 24px; text-align: center; margin-top: 20px;">
+            <div style="width: 56px; height: 56px; border-radius: 50%; background: #FEECEE; color: #FF1E27; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto;">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 800; color: #111827; margin-bottom: 6px;">Live Niche Intelligence Scanner</h3>
+            <p style="font-size: 14px; color: #6B7280; max-width: 520px; margin: 0 auto 20px auto; line-height: 1.5;">Enter any YouTube niche or click a trending topic above to uncover live market demand, top-tier CPM rates, search volumes, and verified sub-niche opportunities.</p>
+          </div>
+
+          <!-- Active AI Results (Shown when real AI responds) -->
+          <div id="nicheActiveState" style="display: none; margin-top: 20px;">
+            <!-- 4 Metric Cards Row -->
+            <div class="niche-metrics-grid">
+              <div class="niche-metric-box">
+                <span class="niche-metric-name">Market Demand</span>
+                <div class="niche-metric-val" id="nicheDemandVal">--</div>
+                <span class="niche-metric-trend text-green" id="nicheDemandTrend">--</span>
+              </div>
+              <div class="niche-metric-box">
+                <span class="niche-metric-name">Avg. Competition</span>
+                <div class="niche-metric-val" id="nicheCompVal">--</div>
+                <span class="niche-metric-trend text-blue" id="nicheCompTrend">--</span>
+              </div>
+              <div class="niche-metric-box">
+                <span class="niche-metric-name">Top Tier CPM</span>
+                <div class="niche-metric-val" id="nicheCpmVal">--</div>
+                <span class="niche-metric-trend text-coral" id="nicheCpmTrend">--</span>
+              </div>
+              <div class="niche-metric-box">
+                <span class="niche-metric-name">Ad Fill Rate</span>
+                <div class="niche-metric-val" id="nicheFillVal">--</div>
+                <span class="niche-metric-trend text-green" id="nicheFillTrend">--</span>
+              </div>
+            </div>
+
+            <!-- AI Recommended Keywords Tag Cloud -->
+            <div class="section-container" style="margin-top: 24px;">
+              <h2 class="section-title">High-Intent Keywords for this Niche</h2>
+              <div id="nicheKeywordsCloud" style="display: flex; gap: 8px; flex-wrap: wrap; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; padding: 16px;">
+                <!-- Injected dynamically by AI -->
+              </div>
+            </div>
+
+            <!-- Recommended Opportunities -->
+            <div class="section-container" style="margin-top: 24px;">
+              <div class="section-header-split">
+                <div>
+                  <h2 class="section-title" id="nicheOppHeader">Verified Sub-Niche Opportunities</h2>
+                  <p style="font-size: 13px; color: #6B7280; margin: 2px 0 0 0;">High CPM, low-competition content angles identified by YTA algorithms</p>
+                </div>
+              </div>
+
+              <div class="opp-cards-grid" id="opportunityGrid">
+                <!-- Dynamically populated with real opportunities -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interest Over Time Chart -->
+        <div class="chart-container-card">
+          <div class="chart-header-split">
+            <div>
+              <h2 class="card-heading-clean">Interest Over Time</h2>
+              <p class="chart-sub-clean">Global search volume for 'Faceless Automation' (Past 12 Months)</p>
+            </div>
+            <button class="link-arrow-red" onclick="triggerToast('Opening Deep Google Trends & YouTube Search Analytics')">&rarr; Deep Analytics</button>
+          </div>
+          <div class="revenue-chart-wrapper">
+            <svg class="revenue-chart-svg" viewBox="0 0 1000 240" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="interestGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#FF1E27" stop-opacity="0.22"/>
+                  <stop offset="100%" stop-color="#FF1E27" stop-opacity="0.0"/>
+                </linearGradient>
+              </defs>
+              <path fill="url(#interestGradient)" d="M 0 200 L 0 190 Q 90 188 180 190 T 360 170 T 540 165 T 720 120 T 900 80 L 1000 50 L 1000 240 L 0 240 Z"/>
+              <path fill="none" stroke="#FF1E27" stroke-width="3" stroke-linecap="round" d="M 0 190 Q 90 188 180 190 T 360 170 T 540 165 T 720 120 T 900 80 L 1000 50"/>
+              <circle cx="18" cy="190" r="4.5" fill="#FF1E27"/>
+              <circle cx="110" cy="189" r="4.5" fill="#FF1E27"/>
+              <circle cx="200" cy="190" r="4.5" fill="#FF1E27"/>
+              <circle cx="290" cy="177" r="4.5" fill="#FF1E27"/>
+              <circle cx="380" cy="170" r="4.5" fill="#FF1E27"/>
+              <circle cx="470" cy="172" r="4.5" fill="#FF1E27"/>
+              <circle cx="560" cy="160" r="4.5" fill="#FF1E27"/>
+              <circle cx="650" cy="130" r="4.5" fill="#FF1E27"/>
+              <circle cx="740" cy="136" r="4.5" fill="#FF1E27"/>
+              <circle cx="830" cy="120" r="4.5" fill="#FF1E27"/>
+              <circle cx="920" cy="90" r="4.5" fill="#FF1E27"/>
+              <circle cx="990" cy="55" r="4.5" fill="#FF1E27"/>
+            </svg>
+            <div class="chart-x-axis months-grid">
+              <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- YouTube Niche Predictor Banner -->
+        <div class="niche-predictor-banner">
+          <div class="predictor-icon-circle">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </div>
+          <div class="predictor-content">
+            <h3 class="predictor-title">YouTube Niche Predictor</h3>
+            <p class="predictor-desc">Our predictive algorithm projects that 'Sustainable Home Tech' will see a 40% growth in CPM next quarter. Want the full keyword blueprint?</p>
+          </div>
+          <button class="btn-dark-pill" onclick="triggerToast('Unlocked Full Sustainable Home Tech Blueprint!')">Unlock Blueprint</button>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- VIEW 4: CHANNEL AUDIT (Diagnostic Tool)        -->
+      <!-- ============================================== -->
+      <section id="view-audit" class="page-view">
+        <div class="page-header-split">
+          <div>
+            <h1 class="page-headline">Channel Diagnostic Tool</h1>
+            <p class="page-subline">Identify growth bottlenecks and optimize your content strategy.</p>
+          </div>
+        </div>
+
+        <!-- Enter Channel Details Card -->
+        <div class="channel-input-card">
+          <h2 class="card-heading-clean">Enter Channel Details</h2>
+          <label class="form-label">YouTube Channel Name or @Handle</label>
+          <div class="search-input-group">
+            <div class="search-field-wrapper">
+              <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              <input type="text" id="auditChannelInput" class="search-input-box" placeholder="Enter channel name or @handle (e.g. @MrBeast, Ali Abdaal, MKBHD)" value="" onkeydown="if(event.key==='Enter') runChannelAudit()">
+            </div>
+            <button class="btn-primary-red with-icon" id="auditSubmitBtn" onclick="runChannelAudit()">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              <span id="auditSubmitBtnText">Analyze Now</span>
+            </button>
+          </div>
+
+          <div style="margin-top: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12.5px; color: #6B7280;">
+            <span style="font-weight: 600;">Popular channels:</span>
+            <button type="button" class="btn-chip-suggest" onclick="setAuditChannel('@MrBeast')">@MrBeast</button>
+            <button type="button" class="btn-chip-suggest" onclick="setAuditChannel('Ali Abdaal')">Ali Abdaal</button>
+            <button type="button" class="btn-chip-suggest" onclick="setAuditChannel('MKBHD')">MKBHD</button>
+            <button type="button" class="btn-chip-suggest" onclick="setAuditChannel('MagnatesMedia')">MagnatesMedia</button>
+          </div>
+        </div>
+
+        <!-- Channel Audit Results Container -->
+        <div id="auditResultsSection">
+          <!-- Initial Empty State -->
+          <div class="audit-empty-placeholder" id="auditEmptyState" style="background: #FFFFFF; border: 1.5px dashed #E5E7EB; border-radius: 16px; padding: 48px 24px; text-align: center; margin-top: 20px;">
+            <div style="width: 56px; height: 56px; border-radius: 50%; background: #FEECEE; color: #FF1E27; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto;">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 800; color: #111827; margin-bottom: 6px;">Live Channel Diagnostic Scanner</h3>
+            <p style="font-size: 14px; color: #6B7280; max-width: 520px; margin: 0 auto 20px auto; line-height: 1.5;">Enter any YouTube channel above or select a suggestion to run a live diagnostic audit on CTR, retention bottlenecks, SEO keyword gaps, and subscriber conversion.</p>
+          </div>
+
+          <!-- Active Results (Shown when diagnostic completes) -->
+          <div id="auditActiveState" style="display: none; margin-top: 20px;">
+            <!-- Diagnostic Summary -->
+            <div class="diagnostic-summary-card">
+              <div class="summary-header-row">
+                <div>
+                  <h2 class="card-heading-clean" id="auditChannelHeaderTitle" style="margin-bottom: 2px;">Channel Diagnostic Summary</h2>
+                  <span id="auditTargetChannelLabel" style="font-size: 13px; color: #6B7280;">Live Diagnostic Audit</span>
+                </div>
+                <span class="badge-audit-score" id="auditScoreBadge">Audit Score: 0/100</span>
+              </div>
+              <div class="diagnostic-bars-grid">
+                <div class="diag-metric-col">
+                  <span class="diag-label">Average CTR</span>
+                  <span class="diag-num" id="auditCtrNum">--</span>
+                  <div class="diag-bar-indicator bg-red-bar"></div>
+                </div>
+                <div class="diag-metric-col">
+                  <span class="diag-label">Retention Rate</span>
+                  <span class="diag-num" id="auditRetentionNum">--</span>
+                  <div class="diag-bar-indicator bg-green-bar"></div>
+                </div>
+                <div class="diag-metric-col">
+                  <span class="diag-label">Upload Frequency</span>
+                  <span class="diag-num" id="auditFreqNum">--</span>
+                  <div class="diag-bar-indicator bg-orange-bar"></div>
+                </div>
+                <div class="diag-metric-col">
+                  <span class="diag-label">SEO Visibility</span>
+                  <span class="diag-num" id="auditSeoNum">--</span>
+                  <div class="diag-bar-indicator bg-red-bar"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Identified Growth Problems (Dynamically rendered) -->
+            <div class="section-container" style="margin-top: 24px;">
+              <h2 class="section-title">Identified Growth Problems &amp; Bottlenecks</h2>
+              <div class="problems-grid" id="auditProblemsGrid">
+                <!-- Injected dynamically by runChannelAudit() -->
+              </div>
+            </div>
+
+            <!-- Actionable Recommendations -->
+            <div class="section-container" style="margin-top: 24px;">
+              <h2 class="section-title">Actionable Growth Recommendations</h2>
+              <div id="auditRecommendationsContainer" style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; padding: 20px;">
+                <!-- Injected dynamically by runChannelAudit() -->
+              </div>
+            </div>
+
+            <!-- Fix these issues automatically Banner -->
+            <div class="fix-issues-banner" style="margin-top: 24px;">
+              <div class="fix-banner-text">
+                <h3 class="fix-banner-title">Fix these issues automatically with Software</h3>
+                <p class="fix-banner-desc">Use YTA's YouTube software tools to generate high-CTR thumbnails and scripts tailored to your channel.</p>
+              </div>
+              <button class="btn-dark-pill with-icon" onclick="navigateTo('view-software')">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.8h7.6z"/></svg>
+                <span>Explore YouTube Software</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- VIEW 5: MASTERCLASS LIBRARY (Course Library)   -->
+      <!-- ============================================== -->
+      <section id="view-courses" class="page-view">
+        <div class="page-header-split">
+          <div>
+            <h1 class="page-headline">Masterclass Library</h1>
+            <p class="page-subline">Learn from the top 1% of YouTube Automation experts.</p>
+          </div>
+          <div class="header-action-group">
+            <div class="header-search-wrap">
+              <svg class="header-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="courseSearchInput" class="header-search-input" placeholder="Search courses..." oninput="filterCourses(this.value)">
+            </div>
+            <button class="cart-icon-btn" onclick="triggerToast('Cart is currently empty')">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Featured Dark Hero Course Card -->
+        <div class="masterclass-hero-card">
+          <div class="masterclass-hero-text">
+            <span class="pill-badge-green">NEW RELEASE</span>
+            <h2 class="masterclass-hero-title">Faceless Empire: The 2024 Blueprint</h2>
+            <p class="masterclass-hero-desc">Master the art of high-CPM faceless channels using modern automated workflows and viral storytelling techniques.</p>
+            <div class="hero-actions">
+              <button class="btn-primary-red" onclick="handlePurchaseRequest('course', 'Faceless Empire: The 2024 Blueprint', 299)">Enroll Now</button>
+              <button class="btn-dark-outline-pill" onclick="openDemoModal('Faceless Empire')">Watch Trailer</button>
+            </div>
+          </div>
+          <div class="masterclass-hero-preview">
+            <div class="preview-img-frame">
+              <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=700&q=80" alt="Faceless Empire Preview" class="preview-hero-img">
+            </div>
+          </div>
+        </div>
+
+        <!-- Category Filter Buttons -->
+        <div class="course-filter-pills-row">
+          <button class="pill-red-tab active" onclick="filterCourseCategory(this, 'all')">All Courses</button>
+          <button class="pill-red-tab" onclick="filterCourseCategory(this, 'niche')">Niche Selection</button>
+          <button class="pill-red-tab" onclick="filterCourseCategory(this, 'video')">Video Production</button>
+          <button class="pill-red-tab" onclick="filterCourseCategory(this, 'monetization')">Monetization</button>
+          <button class="pill-red-tab" onclick="filterCourseCategory(this, 'thumbnails')">Thumbnails &amp; CTR</button>
+          <button class="pill-red-tab" onclick="filterCourseCategory(this, 'management')">Channel Management</button>
+        </div>
+
+        <!-- Top Rated Programs Grid -->
+        <div class="section-container">
+          <div class="section-header-split">
+            <h2 class="section-title">Top Rated Programs</h2>
+            <div class="sort-dropdown-wrapper">
+              <span class="sort-label">Sort by:</span>
+              <select class="custom-select-clean" onchange="sortCourses(this.value)">
+                <option value="pop">Popularity</option>
+                <option value="rating">Rating</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="programs-catalog-grid" id="courseCatalogGrid">
+            <!-- Course 1 -->
+            <div class="program-card" data-cat="all management" onclick="openCourseDetails('YouTube Automation 101', 497)">
+              <div class="program-img-box">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="YouTube Automation 101" class="program-img">
+              </div>
+              <div class="program-body">
+                <h3 class="program-name">YouTube Automation 101</h3>
+                <span class="program-author">Dave Nick</span>
+                <div class="program-footer-row">
+                  <span class="program-rating"><span class="star-gold">&#9733;</span> 4.9 <span class="duration-text">(12h 30m)</span></span>
+                  <span class="program-price-red" data-usd="497">$497</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Course 2 -->
+            <div class="program-card" data-cat="all video" onclick="openCourseDetails('High-Retention Video Editing', 199)">
+              <div class="program-img-box">
+                <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=600&q=80" alt="High-Retention Video Editing" class="program-img">
+              </div>
+              <div class="program-body">
+                <h3 class="program-name">High-Retention Video Editing</h3>
+                <span class="program-author">Sarah Jenks</span>
+                <div class="program-footer-row">
+                  <span class="program-rating"><span class="star-gold">&#9733;</span> 4.7 <span class="duration-text">(8h 15m)</span></span>
+                  <span class="program-price-red" data-usd="199">$199</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Course 3 -->
+            <div class="program-card" data-cat="all thumbnails" onclick="openCourseDetails('Viral Thumbnail Masterclass', 97)">
+              <div class="program-img-box">
+                <img src="https://images.unsplash.com/photo-1508615039623-a25605d2b022?auto=format&fit=crop&w=600&q=80" alt="Viral Thumbnail Masterclass" class="program-img">
+              </div>
+              <div class="program-body">
+                <h3 class="program-name">Viral Thumbnail Masterclass</h3>
+                <span class="program-author">Finzar</span>
+                <div class="program-footer-row">
+                  <span class="program-rating"><span class="star-gold">&#9733;</span> 4.8 <span class="duration-text">(5h 45m)</span></span>
+                  <span class="program-price-red" data-usd="97">$97</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Course 4 -->
+            <div class="program-card" data-cat="all niche monetization" onclick="openCourseDetails('High-CPM Finance Niche Guide', 299)">
+              <div class="program-img-box">
+                <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=600&q=80" alt="High-CPM Finance Niche Guide" class="program-img">
+              </div>
+              <div class="program-body">
+                <h3 class="program-name">High-CPM Finance Niche Guide</h3>
+                <span class="program-author">Graham Stephan</span>
+                <div class="program-footer-row">
+                  <span class="program-rating"><span class="star-gold">&#9733;</span> 4.9 <span class="duration-text">(10h 00m)</span></span>
+                  <span class="program-price-red" data-usd="299">$299</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Course 5 -->
+            <div class="program-card" data-cat="all video" onclick="openCourseDetails('Scriptwriting for Retention', 149)">
+              <div class="program-img-box">
+                <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" alt="Scriptwriting for Retention" class="program-img">
+              </div>
+              <div class="program-body">
+                <h3 class="program-name">Scriptwriting for Retention</h3>
+                <span class="program-author">Paddy Galloway</span>
+                <div class="program-footer-row">
+                  <span class="program-rating"><span class="star-gold">&#9733;</span> 4.6 <span class="duration-text">(6h 20m)</span></span>
+                  <span class="program-price-red" data-usd="149">$149</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Course 6 -->
+            <div class="program-card" data-cat="all management video" onclick="openCourseDetails('Shorts Growth Hack 2.0', 79)">
+              <div class="program-img-box">
+                <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=600&q=80" alt="Shorts Growth Hack 2.0" class="program-img">
+              </div>
+              <div class="program-body">
+                <h3 class="program-name">Shorts Growth Hack 2.0</h3>
+                <span class="program-author">Justin Brown</span>
+                <div class="program-footer-row">
+                  <span class="program-rating"><span class="star-gold">&#9733;</span> 4.5 <span class="duration-text">(4h 50m)</span></span>
+                  <span class="program-price-red" data-usd="79">$79</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scale First Channel Bottom Card -->
+        <div class="scale-banner-card">
+          <div>
+            <h3 class="scale-banner-title">Ready to scale your first channel?</h3>
+            <p class="scale-banner-subtitle">Join 5,000+ students already building their digital empires.</p>
+          </div>
+          <button class="btn-dark-pill" onclick="triggerToast('Loading custom career & automation learning path...')">&rarr; View All Learning Paths</button>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- VIEW 6: YOUTUBE SOFTWARE STORE                 -->
+      <!-- ============================================== -->
+      <section id="view-software" class="page-view">
+        <div class="page-header-split">
+          <div>
+            <h1 class="page-headline">YouTube Software Store</h1>
+            <p class="page-subline">Premium automation tools to scale your YouTube production workflow</p>
+          </div>
+        </div>
+
+        <!-- Hero Featured Tool Banner -->
+        <div class="store-hero-card">
+          <div class="store-hero-text">
+            <span class="pill-badge-red-capsule">MOST POPULAR</span>
+            <h2 class="store-hero-title">ScriptMaster Pro v4.0</h2>
+            <p class="store-hero-desc">Generate high-retention viral scripts based on current YouTube trends and psychological triggers. Supports 30+ languages.</p>
+            <div class="hero-actions">
+              <button class="btn-primary-red with-icon" onclick="handlePurchaseRequest('software', 'ScriptMaster Pro v4.0', 89)">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18 6h-2V4a4 4 0 0 0-8 0v2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-8-2a2 2 0 0 1 4 0v2h-4V4z"/></svg>
+                <span>Buy License - $89</span>
+              </button>
+              <button class="link-btn-red with-icon" onclick="openDemoModal('ScriptMaster Pro v4.0')">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span>Watch Demo</span>
+              </button>
+            </div>
+          </div>
+          <div class="store-hero-visual">
+            <div class="matrix-code-box">
+              <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=700&q=80" alt="Software Architecture" class="matrix-img">
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="store-filters-bar">
+          <div class="store-pills-group">
+            <button class="store-filter-pill active" onclick="filterSoftware(this, 'all')">All Tools</button>
+            <button class="store-filter-pill" onclick="filterSoftware(this, 'scripting')">Scripting</button>
+            <button class="store-filter-pill" onclick="filterSoftware(this, 'editing')">Editing</button>
+            <button class="store-filter-pill" onclick="filterSoftware(this, 'thumbnails')">Thumbnails</button>
+            <button class="store-filter-pill" onclick="filterSoftware(this, 'seo')">SEO</button>
+          </div>
+          <div class="sort-dropdown-wrapper">
+            <select class="custom-select-clean" onchange="sortSoftware(this.value)">
+              <option value="popular">Popular</option>
+              <option value="rating">Rating</option>
+              <option value="price">Price</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Software Grid with Red Borders -->
+        <div class="store-grid" id="softwareCatalogGrid">
+          <!-- Tool 1 -->
+          <div class="store-card" data-category="editing">
+            <div class="store-card-header">
+              <div class="store-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#FF1E27" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+              </div>
+              <span class="store-card-rating"><span class="star-gold">&#9733;</span> 4.9 (1.2k)</span>
+            </div>
+            <h3 class="store-card-title">EditFlow Pro</h3>
+            <p class="store-card-desc">Cloud-based automated video editor that cuts silences and adds captions automatically...</p>
+            <div class="store-card-footer">
+              <span class="store-price-red" data-usd="24" data-period="/mo">$24<span class="per-period">/mo</span></span>
+              <button class="btn-primary-red-sm" onclick="handlePurchaseRequest('software', 'EditFlow Pro', 24)">Get Access</button>
+            </div>
+          </div>
+
+          <!-- Tool 2 -->
+          <div class="store-card" data-category="thumbnails">
+            <div class="store-card-header">
+              <div class="store-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#FF1E27" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+              <span class="store-card-rating"><span class="star-gold">&#9733;</span> 4.8 (850)</span>
+            </div>
+            <h3 class="store-card-title">ThumbVision</h3>
+            <p class="store-card-desc">Generate 10+ high-CTR thumbnail variations with one click.</p>
+            <div class="store-card-footer">
+              <span class="store-price-red" data-usd="49">$49</span>
+              <button class="btn-primary-red-sm" onclick="handlePurchaseRequest('software', 'ThumbVision', 49)">Get Access</button>
+            </div>
+          </div>
+
+          <!-- Tool 3 -->
+          <div class="store-card" data-category="scripting">
+            <div class="store-card-header">
+              <div class="store-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#FF1E27" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+              </div>
+              <span class="store-card-rating"><span class="star-gold">&#9733;</span> 4.7 (2.1k)</span>
+            </div>
+            <h3 class="store-card-title">VoiceClone Studio</h3>
+            <p class="store-card-desc">Hyper-realistic voiceovers for faceless channels in any niche.</p>
+            <div class="store-card-footer">
+              <span class="store-price-red" data-usd="15" data-period="/mo">$15<span class="per-period">/mo</span></span>
+              <button class="btn-primary-red-sm" onclick="handlePurchaseRequest('software', 'VoiceClone Studio', 15)">Get Access</button>
+            </div>
+          </div>
+
+          <!-- Tool 4 -->
+          <div class="store-card" data-category="seo">
+            <div class="store-card-header">
+              <div class="store-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#FF1E27" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+              </div>
+              <span class="store-card-rating"><span class="star-gold">&#9733;</span> 4.9 (500)</span>
+            </div>
+            <h3 class="store-card-title">SEO Ranker</h3>
+            <p class="store-card-desc">Deep-tags and description optimization for the YouTube algorithm.</p>
+            <div class="store-card-footer">
+              <span class="store-price-red" data-usd="29">$29</span>
+              <button class="btn-primary-red-sm" onclick="handlePurchaseRequest('software', 'SEO Ranker', 29)">Get Access</button>
+            </div>
+          </div>
+
+          <!-- Tool 5 -->
+          <div class="store-card" data-category="scripting">
+            <div class="store-card-header">
+              <div class="store-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#FF1E27" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+              </div>
+              <span class="store-card-rating"><span class="star-gold">&#9733;</span> 4.6 (320)</span>
+            </div>
+            <h3 class="store-card-title">HookGen</h3>
+            <p class="store-card-desc">Specialized retention engine for writing the first 30 seconds of your video.</p>
+            <div class="store-card-footer">
+              <span class="store-price-red" data-usd="12" data-period="/mo">$12<span class="per-period">/mo</span></span>
+              <button class="btn-primary-red-sm" onclick="handlePurchaseRequest('software', 'HookGen', 12)">Get Access</button>
+            </div>
+          </div>
+
+          <!-- Tool 6 -->
+          <div class="store-card" data-category="seo">
+            <div class="store-card-header">
+              <div class="store-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#FF1E27" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <span class="store-card-rating"><span class="star-gold">&#9733;</span> 4.5 (140)</span>
+            </div>
+            <h3 class="store-card-title">CommentBot</h3>
+            <p class="store-card-desc">Manage community engagement with automated smart replies.</p>
+            <div class="store-card-footer">
+              <span class="store-price-red" data-usd="19" data-period="/mo">$19<span class="per-period">/mo</span></span>
+              <button class="btn-primary-red-sm" onclick="handlePurchaseRequest('software', 'CommentBot', 19)">Get Access</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enterprise Solutions Card -->
+        <div class="enterprise-banner-card">
+          <div class="enterprise-left">
+            <div class="enterprise-icon-circle">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+              <h3 class="enterprise-title">Enterprise Solutions</h3>
+              <p class="enterprise-subtitle">Need custom software tools for your media agency?</p>
+            </div>
+          </div>
+          <button class="btn-outline-pill" onclick="triggerToast('Connecting to Enterprise Sales Team...')">Contact Sales</button>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- VIEW 7: USER PROFILE & SETTINGS                -->
+      <!-- ============================================== -->
+      <section id="view-settings" class="page-view">
+
+        <!-- 7A: GUEST AUTH SCREEN (Shown when user is not logged in) -->
+        <div id="settingsAuthView" class="settings-auth-container">
+          <div class="auth-card-wrapper">
+            <div class="auth-header-center">
+              <div class="auth-yt-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </div>
+              <h2 class="auth-main-heading" id="authHeadingText">Create Your YTA Account</h2>
+              <p class="auth-sub-desc" id="authSubText">Sign up to manage your channel settings, connect YouTube analytics, and unlock automation tools.</p>
+
+              <!-- Auth Mode Switcher Tabs -->
+              <div class="auth-tabs-row">
+                <button type="button" class="auth-tab-btn active" id="tabRegister" onclick="switchAuthMode('register')">Create Account</button>
+                <button type="button" class="auth-tab-btn" id="tabLogin" onclick="switchAuthMode('login')">Sign In</button>
+              </div>
+            </div>
+
+            <!-- Auth Form -->
+            <form id="authForm" class="auth-form-body" onsubmit="handleAuthSubmit(event)">
+              <div class="field-box">
+                <label class="form-label">Email Address *</label>
+                <div class="input-with-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  <input type="email" id="authEmail" class="clean-text-input icon-indent" placeholder="name@example.com" required>
+                </div>
+              </div>
+
+              <div class="field-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <label class="form-label" style="margin-bottom: 0;">Password *</label>
+                  <button type="button" class="link-btn-red" id="forgotPasswordBtn" style="font-size: 12.5px; display: none; background: none; border: none; cursor: pointer; padding: 0;" onclick="openForgotPasswordModal()">Forgot Password?</button>
+                </div>
+                <div class="input-with-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <input type="password" id="authPassword" class="clean-text-input icon-indent has-toggle" placeholder="At least 6 characters" minlength="6" required>
+                  <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('authPassword', this)" title="Show password" aria-label="Show password">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="field-box" id="channelNameFieldGroup">
+                <label class="form-label">YouTube Channel Name <span class="optional-tag">(Optional)</span></label>
+                <div class="input-with-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                  <input type="text" id="authChannelName" class="clean-text-input icon-indent" placeholder="e.g. TechReviews Pro">
+                </div>
+              </div>
+
+              <div class="auth-perks-box">
+                <div class="auth-perk-item"><span class="perk-check">✓</span> <span>Free Channel Diagnostic &amp; SEO Audit</span></div>
+                <div class="auth-perk-item"><span class="perk-check">✓</span> <span>High-CPM Niche Intelligence Scanner</span></div>
+                <div class="auth-perk-item"><span class="perk-check">✓</span> <span>Secure Bacs Payment &amp; Direct Debit integration</span></div>
+              </div>
+
+              <button type="submit" class="btn-primary-red full-width" id="authSubmitBtn">Create Account &amp; Continue</button>
+
+              <div class="auth-bottom-switch">
+                <span id="authSwitchPrompt">Already have an account?</span>
+                <button type="button" class="link-btn-red" id="authSwitchBtn" onclick="toggleAuthMode()">Sign In</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- 7B: LOGGED-IN PROFILE & SETTINGS SCREEN (Shown after account creation) -->
+        <div id="settingsProfileView" class="settings-profile-container" style="display: none;">
+          
+          <!-- Active Creator Profile Banner -->
+          <div class="creator-profile-banner" style="background: linear-gradient(135deg, #18191B 0%, #24262A 100%); border-radius: 18px; padding: 22px 26px; margin-bottom: 24px; color: white; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.12);">
+            <div style="display: flex; align-items: center; gap: 18px;">
+              <div class="user-avatar-huge" id="profileHeaderAvatar" style="width: 60px; height: 60px; font-size: 22px; background: #FF1E27; color: white; font-weight: 800; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(255,30,39,0.4);">
+                <span id="profileHeaderInitials">YC</span>
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+                  <h2 style="font-size: 20px; font-weight: 800; color: #FFFFFF;" id="profileHeaderName">Creator Profile</h2>
+                  <span style="background: rgba(16, 185, 129, 0.2); color: #10B981; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #10B981;"></span>
+                    Logged In
+                  </span>
+                </div>
+                <div style="font-size: 13px; color: #9CA3AF; display: flex; align-items: center; gap: 14px;">
+                  <span id="profileHeaderEmail">creator@yta.com</span>
+                  <span>&bull;</span>
+                  <span id="profileHeaderPlan" style="color: #9CA3AF; font-weight: 600;">Free Starter Tier &bull; No Active Subscription</span>
+                </div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <button class="btn-primary-red with-icon" onclick="saveSettings()">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Save</span>
+              </button>
+              <button class="btn-signout-banner" onclick="signOutUser()">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="page-header-split">
+            <div>
+              <h1 class="page-headline">Account Details</h1>
+              <p class="page-subline">Manage your profile, channels, and subscription preferences</p>
+            </div>
+          </div>
+
+          <!-- User Profile Form Card -->
+          <div class="profile-form-card">
+            <div class="profile-avatar-col">
+              <div class="user-avatar-huge" id="profileAvatarDisplay">
+                <span id="profileAvatarInitials">AR</span>
+                <button class="avatar-edit-badge" title="Change Photo" onclick="triggerToast('Photo upload dialog opened')">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="profile-fields-grid">
+              <div class="field-box">
+                <label class="form-label">Full Name / Channel</label>
+                <input type="text" id="settingFullName" class="clean-text-input" value="Alex Rivera">
+              </div>
+
+              <div class="field-box">
+                <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
+                  <span>Email Address</span>
+                  <span style="font-size: 11px; color: #6B7280; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Locked
+                  </span>
+                </label>
+                <div class="input-with-icon" style="position: relative;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#9CA3AF" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  <input type="email" id="settingEmail" class="clean-text-input icon-indent" value="alex@yta.com" readonly style="background-color: #F8F9FA; color: #6B7280; cursor: not-allowed; border-color: #E5E7EB; font-weight: 500;" title="Account email address cannot be edited">
+                </div>
+              </div>
+
+              <div class="field-box">
+                <label class="form-label">Location</label>
+                <div class="input-with-icon" style="position: relative;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#9CA3AF" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  <input type="text" id="settingLocation" class="clean-text-input icon-indent" placeholder="Detecting location..." readonly style="background-color: #F8F9FA; color: #374151; font-weight: 500;">
+                </div>
+              </div>
+
+              <div class="field-box">
+                <label class="form-label">Timezone</label>
+                <div class="input-with-icon" style="position: relative;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#9CA3AF" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <input type="text" id="settingTimezone" class="clean-text-input icon-indent" placeholder="Detecting timezone..." readonly style="background-color: #F8F9FA; color: #374151; font-weight: 500;">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Connected YouTube Channels -->
+          <div class="section-container">
+            <div class="section-header-split">
+              <h2 class="section-title">Connected YouTube Channels</h2>
+              <button class="btn-outline-pill with-icon" onclick="openConnectChannelModal()">
+                <span>+ Connect New Channel</span>
+              </button>
+            </div>
+
+            <div class="channels-grid" id="connectedChannelsContainer">
+              <!-- Channel 1 -->
+              <div class="channel-card">
+                <div class="channel-card-top">
+                  <div class="channel-avatar-circle">
+                    <span id="userPrimaryChannelAvatar">Tech<br>Reviews</span>
+                  </div>
+                  <span class="badge-amber-pill">Primary</span>
+                </div>
+                <h3 class="channel-card-title" id="userPrimaryChannelTitle">TechReviews Pro</h3>
+                <p class="channel-subs" id="userPrimaryChannelSubs">Verified Creator &bull; Active Sync</p>
+                <button class="btn-dark-pill-sm full-width" onclick="triggerToast('Managing channel connection')">Connect &bull; Active</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order & Purchase History (Courses & YouTube Software) -->
+          <div class="section-container" id="purchasesSection">
+            <div class="section-header-split">
+              <div>
+                <h2 class="section-title">My Purchases &amp; Order History</h2>
+                <p style="font-size: 13px; color: #6B7280; margin: 3px 0 0 0;">Lifetime access and verified receipts for your purchased Masterclasses and YouTube software tools</p>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="btn-outline-pill-sm with-icon" onclick="navigateTo('view-courses')">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                  <span>Browse Courses</span>
+                </button>
+                <button class="btn-outline-pill-sm with-icon" onclick="navigateTo('view-software')">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                  <span>YouTube Software Store</span>
+                </button>
+              </div>
+            </div>
+
+            <div id="userPurchasesContainer">
+              <!-- Dynamically populated by renderUserPurchases() -->
+            </div>
+          </div>
+
+          <!-- Preferences & Notifications -->
+          <div class="section-container">
+            <h2 class="section-title">Preferences &amp; Notifications</h2>
+            <div class="preferences-list">
+              <!-- Email Notifications -->
+              <div class="pref-card">
+                <div class="pref-left">
+                  <div class="pref-icon-box">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#FF1E27" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                  </div>
+                  <div>
+                    <h4 class="pref-title">Email Notifications</h4>
+                    <p class="pref-desc">Receive weekly channel health reports and niche alerts</p>
+                  </div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked onchange="triggerToast('Email notification preferences saved')">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Delete Account Danger Zone -->
+          <div class="danger-zone-card">
+            <div class="danger-text">
+              <h4 class="danger-title">Delete Account</h4>
+              <p class="danger-desc">Permanently remove all your data, Bacs mandates, and channel history</p>
+            </div>
+            <button class="btn-solid-red" onclick="confirmDeleteAccount()">Delete Account</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Interactive Modal Container -->
+  <div class="modal-overlay" id="appModal" onclick="closeModal(event)">
+    <div class="modal-window" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeModal()">&times;</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Feedback -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Floating Action Button (FAB) for Email Support -->
+  <div class="fab-support-container" id="fabSupportContainer">
+    <div class="fab-tooltip" id="fabTooltip">Need Help? Email dallardyta@gmail.com</div>
+    <button class="fab-support-btn" id="fabSupportBtn" onclick="openContactSupportModal()" aria-label="Contact Email Support" title="Email Support: dallardyta@gmail.com">
+      <div class="fab-pulse-ring"></div>
+      <svg class="fab-icon" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+        <polyline points="22,6 12,13 2,6"/>
+      </svg>
+      <span class="fab-badge-online"></span>
+    </button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

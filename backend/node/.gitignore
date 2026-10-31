@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Environment Variables & Secrets (CRITICAL)
+.env
+.env.*
+*.env
+
+# Local database fallback files (CONTAINS SENSITIVE USER DATA)
+.users_fallback.json
+.support_tickets.json
+*.fallback.json
+.*_fallback.json
+
+# Logs
+logs/
+*.log
+npm-debug.log*
