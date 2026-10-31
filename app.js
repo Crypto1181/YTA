@@ -38,10 +38,10 @@ const authState = {
   token: null
 };
 
-// Dynamic API Base: automatically uses localhost:5000 in local dev, or production URL when hosted
+// Dynamic API Base: automatically uses localhost:5000 in local dev, or your live Vercel backend when hosted
 const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? 'http://localhost:5000/api'
-  : (window.YTA_BACKEND_URL || '/api');
+  : 'https://yta-backend.vercel.app/api';
 
 // Initialize Application
 document.addEventListener('DOMContentLoaded', () => {

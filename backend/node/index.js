@@ -28,6 +28,20 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Ensure MongoDB connection in Serverless Environments (Vercel)
+app.use(async (req, res, next) => {
+  if (mongoose.connection.readyState === 0 && process.env.MONGODB_URI) {
+    try {
+      await mongoose.connect(process.env.MONGODB_URI, {
+        serverSelectionTimeoutMS: 10000
+      });
+    } catch (e) {
+      console.warn('Serverless DB auto-reconnect warning:', e.message);
+    }
+  }
+  next();
+});
+
 // API Routes
 app.use('/api/users', userRoutes);
 app.use('/api/ai', aiRoutes);
