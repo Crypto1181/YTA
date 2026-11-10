@@ -346,6 +346,19 @@ function renderConnectedChannels() {
   container.innerHTML = html;
 }
 
+function isCoursePurchase(purchase) {
+  if (!purchase) return false;
+  if (purchase.itemType === 'course') return true;
+  const name = (purchase.itemName || '').toLowerCase();
+  return [
+    'course', 'playbook', 'track', 'roadmap', 'guide',
+    'foundations', 'workshop', 'lab', 'atlas', 'method', 'sprint',
+    'silentchannel', 'silentcast', 'channelpeak', 'channelops',
+    'peakretention', 'clickmagnet', 'thumbclick', 'storyarc',
+    'blueprint', 'mastery', '101', 'hack'
+  ].some(keyword => name.includes(keyword));
+}
+
 function renderUserPurchases() {
   const container = document.getElementById('userPurchasesContainer');
   if (!container) return;
@@ -381,12 +394,7 @@ function renderUserPurchases() {
 
   let html = `<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">`;
   purchases.forEach((p, idx) => {
-    const isCourse = (p.itemName || '').toLowerCase().includes('course') || 
-                     (p.itemName || '').toLowerCase().includes('blueprint') || 
-                     (p.itemName || '').toLowerCase().includes('mastery') || 
-                     (p.itemName || '').toLowerCase().includes('101') ||
-                     (p.itemName || '').toLowerCase().includes('guide') ||
-                     (p.itemName || '').toLowerCase().includes('hack');
+    const isCourse = isCoursePurchase(p);
 
     const dateStr = p.purchasedAt 
       ? new Date(p.purchasedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
@@ -447,9 +455,7 @@ function openOrderReceiptModal(index) {
     : new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
   const ref = p.checkoutId || p.bacsReference || ('BACHS-' + Date.now().toString().slice(-6));
-  const isCourse = (p.itemName || '').toLowerCase().includes('course') || 
-                   (p.itemName || '').toLowerCase().includes('blueprint') || 
-                   (p.itemName || '').toLowerCase().includes('mastery');
+  const isCourse = isCoursePurchase(p);
 
   openModal(`
     <div style="padding: 10px 0;">
@@ -1461,7 +1467,13 @@ function openModal(contentHtml) {
 function closeModal(event) {
   if (event && event.target !== document.getElementById('appModal')) return;
   const modal = document.getElementById('appModal');
-  if (modal) modal.classList.remove('active');
+  if (modal) {
+    modal.querySelectorAll('video').forEach(v => {
+      v.pause();
+      v.currentTime = 0;
+    });
+    modal.classList.remove('active');
+  }
 }
 
 /* ===================================================================
@@ -1775,17 +1787,27 @@ function openAuditModal() {
 }
 
 function openDemoModal(title) {
+  const normalizedTitle = (title || '').toLowerCase();
+  const isCourse = normalizedTitle.includes('silentchannel') || normalizedTitle.includes('playbook') || normalizedTitle.includes('faceless');
+  const itemType = isCourse ? 'course' : 'software';
+  const itemPrice = isCourse ? 299 : 89;
+  const itemName = isCourse ? 'SilentChannel: The 2026 Playbook' : title;
+  const safeName = itemName.replace(/'/g, "\\'");
+
   openModal(`
-    <div style="text-align: center; padding: 10px 0;">
-      <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 6px;">${title} • Preview</h3>
-      <p style="font-size: 13.5px; color: #6B7280; margin-bottom: 18px;">Watch the 3-minute product overview and workflow demo</p>
-      <div style="width: 100%; height: 240px; background: #000; border-radius: 14px; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=700&q=80" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">
-        <div style="position: absolute; width: 60px; height: 60px; border-radius: 50%; background: #FF1E27; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 16px rgba(255, 30, 39, 0.4);">
-          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
-        </div>
+    <div style="text-align: center; padding: 8px 0;">
+      <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 6px; color: #111827;">${title} &bull; Demo Preview</h3>
+      <p style="font-size: 13.5px; color: #6B7280; margin-bottom: 16px;">Watch the product overview and workflow demo</p>
+      <div style="width: 100%; background: #000; border-radius: 14px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);">
+        <video id="demoModalVideo" controls autoplay playsinline style="width: 100%; max-height: 360px; display: block; object-fit: contain; background: #000;">
+          <source src="homepage-hero-intro-e3f3aa809535.mp4" type="video/mp4">
+          Your browser does not support video playback.
+        </video>
       </div>
-      <button class="btn-primary-red" onclick="closeModal(); handlePurchaseRequest('software', '${title}', 89);">Get Full Access with Bachs</button>
+      <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <button class="btn-primary-red" onclick="closeModal(); handlePurchaseRequest('${itemType}', '${safeName}', ${itemPrice});">Get Full Access with Bachs</button>
+        <button class="btn-outline-pill" onclick="closeModal()">Close</button>
+      </div>
     </div>
   `);
 }
@@ -1803,9 +1825,9 @@ function openProblemDetails(problemName, problemDesc) {
 
       <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Recommended Action Steps:</h4>
       <ul style="font-size: 13.5px; color: #4B5563; padding-left: 18px; margin-bottom: 22px; line-height: 1.6;">
-        <li>A/B test thumbnail contrast & faces using ThumbVision (10+ variations)</li>
+        <li>A/B test thumbnail contrast & faces using ThumbFrame (10+ variations)</li>
         <li>Implement 3-second pattern-interrupt hooks to fix initial drop-off</li>
-        <li>Inject high-intent search tags and keywords using SEO Ranker</li>
+        <li>Inject high-intent search tags and keywords using SEO Beacon</li>
       </ul>
 
       <div style="display: flex; gap: 10px;">
@@ -1817,14 +1839,16 @@ function openProblemDetails(problemName, problemDesc) {
 }
 
 function openCourseDetails(courseTitle, priceUSD = 199) {
-  const formatted = formatPrice(priceUSD);
+  const isFree = Number(priceUSD) <= 0;
+  const formatted = isFree ? 'FREE' : formatPrice(priceUSD);
+  const safeTitle = courseTitle.replace(/'/g, "\\'");
   openModal(`
     <div>
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; gap: 12px;">
         <h3 style="font-size: 20px; font-weight: 800; color: #111827;">${courseTitle}</h3>
-        <span class="program-price-red" style="font-size: 22px; font-weight: 800; color: #FF1E27; white-space: nowrap;">${formatted}</span>
+        <span class="program-price-red" style="font-size: 22px; font-weight: 800; color: ${isFree ? '#10B981' : '#FF1E27'}; white-space: nowrap;">${formatted}</span>
       </div>
-      <p style="font-size: 13.5px; color: #6B7280; margin-bottom: 16px;">Curriculum &amp; Masterclass Certification &bull; ${appState.currency}</p>
+      <p style="font-size: 13.5px; color: #6B7280; margin-bottom: 16px;">Curriculum &amp; Masterclass Certification &bull; ${isFree ? 'Open Access' : appState.currency}</p>
       
       <div style="display: flex; gap: 14px; margin-bottom: 18px; font-size: 13px; flex-wrap: wrap;">
         <span style="color: #10B981; font-weight: 700;">★ 4.9 Rating</span>
@@ -1838,11 +1862,37 @@ function openCourseDetails(courseTitle, priceUSD = 199) {
       </p>
 
       <div style="display: flex; gap: 12px;">
-        <button class="btn-primary-red" onclick="closeModal(); handlePurchaseRequest('course', '${courseTitle.replace(/'/g, "\\'")}', ${priceUSD});">Enroll Now (${formatted})</button>
+        ${isFree
+          ? `<button class="btn-primary-red" onclick="closeModal(); enrollFreeCourse('${safeTitle}');">Unlock Free Access</button>`
+          : `<button class="btn-primary-red" onclick="closeModal(); handlePurchaseRequest('course', '${safeTitle}', ${priceUSD});">Enroll Now (${formatted})</button>`}
         <button class="btn-outline-pill" onclick="closeModal()">Close</button>
       </div>
     </div>
   `);
+}
+
+function enrollFreeCourse(courseTitle) {
+  if (authState.user) {
+    if (!authState.user.purchases) authState.user.purchases = [];
+    if (!authState.user.purchases.some(p => p.itemName === courseTitle)) {
+      authState.user.purchases.push({
+        itemType: 'course',
+        itemName: courseTitle,
+        amount: '0.00',
+        currency: 'FREE',
+        purchasedAt: new Date().toISOString()
+      });
+      localStorage.setItem('yta_auth_session', JSON.stringify({
+        ...authState.user,
+        token: authState.token || authState.user.token
+      }));
+      renderUserPurchases();
+      updateAuthUI();
+    }
+    triggerToast(`Free access unlocked for ${courseTitle}!`, 'success');
+    return;
+  }
+  triggerToast(`Free preview unlocked for ${courseTitle}! Sign up to save progress.`, 'success');
 }
 
 function openConnectChannelModal() {
