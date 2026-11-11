@@ -38,10 +38,37 @@ const authState = {
   token: null
 };
 
-// Dynamic API Base: automatically uses localhost:5000 in local dev, or your live Vercel backend when hosted
-const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-  ? 'http://localhost:5000/api'
-  : 'https://yta-backend.vercel.app/api';
+// Dynamic API Base: tries localhost:5000 in local dev, automatically falling back to the live Vercel backend
+const LOCAL_API_BASE = 'http://localhost:5000/api';
+const PROD_API_BASE = 'https://yta-backend.vercel.app/api';
+const IS_LOCAL_HOST = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const API_BASE = IS_LOCAL_HOST ? LOCAL_API_BASE : PROD_API_BASE;
+
+async function apiFetch(endpointPath, options = {}) {
+  const path = endpointPath.startsWith('/') ? endpointPath : `/${endpointPath}`;
+  if (!IS_LOCAL_HOST) {
+    return fetch(`${PROD_API_BASE}${path}`, options);
+  }
+  try {
+    const localRes = await fetch(`${LOCAL_API_BASE}${path}`, options);
+    if (localRes.status < 500 && localRes.status !== 404) {
+      return localRes;
+    }
+  } catch (err) {
+    console.warn(`Local API unavailable for ${path}; falling back to hosted backend:`, err.message);
+  }
+  return fetch(`${PROD_API_BASE}${path}`, options);
+}
+
+function escapeHtmlAttr(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, "\\'")
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\r?\n/g, ' ');
+}
 
 // Initialize Application
 document.addEventListener('DOMContentLoaded', () => {
@@ -594,10 +621,10 @@ async function handleAuthSubmit(event) {
     return;
   }
 
-  const endpoint = appState.authMode === 'register' ? `${API_BASE}/users/register` : `${API_BASE}/users/login`;
+  const endpoint = appState.authMode === 'register' ? '/users/register' : '/users/login';
 
   try {
-    const res = await fetch(endpoint, {
+    const res = await apiFetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, channelName })
@@ -770,7 +797,7 @@ async function handleBachsAuthCheckoutSubmit(event, itemType, itemName, priceUSD
 
   // Register user locally and on backend
   try {
-    await fetch(`${API_BASE}/users/register`, {
+    await apiFetch('/users/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, channelName })
@@ -828,7 +855,7 @@ async function initiateBachsCheckout(itemName, amount, currency, email, channelN
   triggerToast(`Connecting to Bachs Gateway (${currency} ${amount})...`, 'info');
 
   try {
-    const res = await fetch(`${API_BASE}/payment/create-checkout`, {
+    const res = await apiFetch('/payment/create-checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1083,12 +1110,15 @@ async function searchNiches() {
   triggerToast(`Scanning market opportunities for "${query}"...`, 'info');
 
   try {
-    const res = await fetch(`${API_BASE}/ai/niche-intelligence`, {
+    const res = await apiFetch('/ai/niche-intelligence', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ keyword: query })
     });
     const result = await res.json();
+    if (!res.ok || !result.success || !result.data) {
+      throw new Error(result.message || 'Could not analyze niche');
+    }
     if (result.success && result.data) {
       const d = result.data;
 
@@ -1277,12 +1307,15 @@ async function runChannelAudit() {
   triggerToast(`Running deep channel diagnostic for "${val}"...`, 'info');
 
   try {
-    const res = await fetch(`${API_BASE}/ai/analyze-channel`, {
+    const res = await apiFetch('/ai/analyze-channel', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ channelName: val })
     });
     const result = await res.json();
+    if (!res.ok || !result.success || !result.data) {
+      throw new Error(result.message || 'Could not complete live audit');
+    }
     if (result.success && result.data) {
       const d = result.data;
 
@@ -1322,8 +1355,8 @@ async function runChannelAudit() {
         let html = '';
         d.identifiedProblems.forEach((p, idx) => {
           const colorClass = colors[idx % colors.length];
-          const escapedTitle = (p.title || 'Growth Bottleneck').replace(/'/g, "\\'");
-          const escapedDesc = (p.desc || '').replace(/'/g, "\\'");
+          const escapedTitle = escapeHtmlAttr(p.title || 'Growth Bottleneck');
+          const escapedDesc = escapeHtmlAttr(p.desc || '');
           html += `
             <div class="problem-card" onclick="openProblemDetails('${escapedTitle}', '${escapedDesc}')">
               <div class="problem-icon-square ${colorClass}"></div>
@@ -1430,7 +1463,7 @@ async function saveSettings() {
 
     // Also sync to backend API if logged in
     try {
-      await fetch(`${API_BASE}/users/profile`, {
+      await apiFetch('/users/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -1455,10 +1488,14 @@ async function saveSettings() {
    MODALS SYSTEM
    =================================================================== */
 
-function openModal(contentHtml) {
+function openModal(contentHtml, options = {}) {
   const modal = document.getElementById('appModal');
   const container = document.getElementById('modalContent');
+  const modalWindow = modal ? modal.querySelector('.modal-window') : null;
   if (modal && container) {
+    if (modalWindow) {
+      modalWindow.classList.toggle('modal-wide', Boolean(options.wide));
+    }
     container.innerHTML = contentHtml;
     modal.classList.add('active');
   }
@@ -1468,6 +1505,8 @@ function closeModal(event) {
   if (event && event.target !== document.getElementById('appModal')) return;
   const modal = document.getElementById('appModal');
   if (modal) {
+    const modalWindow = modal.querySelector('.modal-window');
+    if (modalWindow) modalWindow.classList.remove('modal-wide');
     modal.querySelectorAll('video').forEach(v => {
       v.pause();
       v.currentTime = 0;
@@ -1551,7 +1590,7 @@ async function handleRequestResetCode(event) {
   triggerToast(`Sending verification code to ${email}...`, 'info');
 
   try {
-    const res = await fetch(`${API_BASE}/users/forgot-password`, {
+    const res = await apiFetch('/users/forgot-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email })
@@ -1589,7 +1628,7 @@ async function handlePerformPasswordReset(event) {
   if (!email || !resetCode || !newPassword) return;
 
   try {
-    const res = await fetch(`${API_BASE}/users/reset-password`, {
+    const res = await apiFetch('/users/reset-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, resetCode, newPassword })
@@ -1714,7 +1753,7 @@ async function handleSupportSubmit(event) {
   let ticketId = 'YTA-' + Math.floor(100000 + Math.random() * 900000);
 
   try {
-    const res = await fetch(`${API_BASE}/support`, {
+    const res = await apiFetch('/support', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, topic, message })
@@ -1893,6 +1932,142 @@ function enrollFreeCourse(courseTitle) {
     return;
   }
   triggerToast(`Free preview unlocked for ${courseTitle}! Sign up to save progress.`, 'success');
+}
+
+const LEARNING_PATHS = [
+  {
+    id: 'launch',
+    level: 'beginner',
+    levelLabel: 'Beginner',
+    levelClass: 'lp-level-beginner',
+    title: 'Zero-to-Monetized Launch Path',
+    description: 'Pick a profitable non-AI niche, package clickable thumbnails, and build repeatable channel operations.',
+    timeline: '4 Weeks • 28h 15m',
+    outcome: 'Goal: Monetize your first policy-compliant channel',
+    steps: [
+      { title: 'High-RPM Finance Niche Atlas', author: 'Graham Stephan', duration: '10h 00m', priceUSD: 299 },
+      { title: 'ClickMagnet Cover Lab', author: 'Finzar', duration: '5h 45m', priceUSD: 97 },
+      { title: 'ChannelOps Foundations', author: 'Dave Nick', duration: '12h 30m', priceUSD: 497 }
+    ]
+  },
+  {
+    id: 'retention',
+    level: 'intermediate',
+    levelLabel: 'Intermediate',
+    levelClass: 'lp-level-intermediate',
+    title: 'Viral Storytelling & Retention Path',
+    description: 'Turn average uploads into binge-worthy videos by mastering narrative hooks, pacing, and high-CTR packaging.',
+    timeline: '3 Weeks • 20h 20m',
+    outcome: 'Goal: Boost 30s intro hold, AVD & click-through rate',
+    steps: [
+      { title: 'StoryArc Script Method', author: 'Paddy Galloway', duration: '6h 20m', priceUSD: 149 },
+      { title: 'PeakRetention Edit Workshop', author: 'Sarah Jenks', duration: '8h 15m', priceUSD: 199 },
+      { title: 'ClickMagnet Cover Lab', author: 'Finzar', duration: '5h 45m', priceUSD: 97 }
+    ]
+  },
+  {
+    id: 'scale',
+    level: 'pro',
+    levelLabel: 'Pro Scale',
+    levelClass: 'lp-level-pro',
+    title: 'Rapid Shorts & Studio Scale Path',
+    description: 'Build momentum with Short-form discovery, systemize off-camera production, and manage a full creator team.',
+    timeline: '6 Weeks • 25h 20m',
+    outcome: 'Goal: Scale multiple revenue streams & team workflows',
+    steps: [
+      { title: 'Shorts Velocity Sprint 2.0', author: 'Justin Brown', duration: '4h 50m', priceUSD: 79 },
+      { title: 'SilentChannel: The 2026 Playbook', author: 'YTA Flagship', duration: '8h 00m', priceUSD: 299 },
+      { title: 'ChannelOps Foundations', author: 'Dave Nick', duration: '12h 30m', priceUSD: 497 }
+    ]
+  }
+];
+
+function openLearningPathsModal(selectedLevel = 'all') {
+  const cardsHtml = LEARNING_PATHS.map(path => {
+    const firstStep = path.steps[0];
+    const safeFirstTitle = firstStep.title.replace(/'/g, "\\'");
+    const stepsHtml = path.steps.map((step, index) => {
+      const safeTitle = step.title.replace(/'/g, "\\'");
+      return `
+        <button type="button" class="lp-step-item" onclick="closeModal(); openCourseDetails('${safeTitle}', ${step.priceUSD});">
+          <div class="lp-step-left">
+            <span class="lp-step-num">${index + 1}</span>
+            <div class="lp-step-info">
+              <span class="lp-step-title">${step.title}</span>
+              <span class="lp-step-sub">${step.author} &bull; ${step.duration}</span>
+            </div>
+          </div>
+          <div class="lp-step-right">
+            <span class="lp-step-price">${formatPrice(step.priceUSD)}</span>
+            <span class="lp-step-arrow">&rarr;</span>
+          </div>
+        </button>
+      `;
+    }).join('');
+
+    return `
+      <div class="lp-path-card" data-lp-level="${path.level}" style="${selectedLevel !== 'all' && path.level !== selectedLevel ? 'display:none;' : ''}">
+        <div class="lp-path-top">
+          <div>
+            <div class="lp-path-title-row">
+              <h4 class="lp-path-name">${path.title}</h4>
+              <span class="lp-level-pill ${path.levelClass}">${path.levelLabel}</span>
+            </div>
+            <p class="lp-path-desc">${path.description}</p>
+          </div>
+          <div class="lp-path-meta">
+            <div class="lp-path-duration">${path.timeline}</div>
+            <div class="lp-path-count">${path.steps.length} Masterclasses</div>
+          </div>
+        </div>
+
+        <div class="lp-steps-list">${stepsHtml}</div>
+
+        <div class="lp-path-footer">
+          <span class="lp-path-outcome">&check; ${path.outcome}</span>
+          <button type="button" class="btn-primary-red-sm" onclick="closeModal(); openCourseDetails('${safeFirstTitle}', ${firstStep.priceUSD});">
+            Start Step 1 &rarr;
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  openModal(`
+    <div>
+      <div class="lp-modal-header">
+        <span class="lp-modal-badge">CURATED ROADMAPS</span>
+        <h3 class="lp-modal-title">YouTube Creator Learning Paths</h3>
+        <p class="lp-modal-subtitle">Follow a structured track based on your current stage. Click any course step to preview its syllabus and enroll.</p>
+      </div>
+
+      <div class="lp-filter-tabs">
+        <button type="button" class="lp-filter-tab ${selectedLevel === 'all' ? 'active' : ''}" onclick="filterLearningPathsModal(this, 'all')">All Paths (${LEARNING_PATHS.length})</button>
+        <button type="button" class="lp-filter-tab ${selectedLevel === 'beginner' ? 'active' : ''}" onclick="filterLearningPathsModal(this, 'beginner')">Beginner</button>
+        <button type="button" class="lp-filter-tab ${selectedLevel === 'intermediate' ? 'active' : ''}" onclick="filterLearningPathsModal(this, 'intermediate')">Intermediate</button>
+        <button type="button" class="lp-filter-tab ${selectedLevel === 'pro' ? 'active' : ''}" onclick="filterLearningPathsModal(this, 'pro')">Pro Scale</button>
+      </div>
+
+      <div class="lp-paths-stack" id="learningPathsList">
+        ${cardsHtml}
+      </div>
+
+      <div class="lp-modal-bottom">
+        <span class="lp-modal-hint">Prices shown in <strong>${appState.currency}</strong></span>
+        <button type="button" class="btn-outline-pill" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  `, { wide: true });
+}
+
+function filterLearningPathsModal(btn, level) {
+  document.querySelectorAll('.lp-filter-tab').forEach(tab => tab.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  document.querySelectorAll('#learningPathsList .lp-path-card').forEach(card => {
+    const cardLevel = card.getAttribute('data-lp-level');
+    card.style.display = (level === 'all' || cardLevel === level) ? 'block' : 'none';
+  });
 }
 
 function openConnectChannelModal() {
