@@ -854,6 +854,8 @@ async function initiateBachsCheckout(itemName, amount, currency, email, channelN
   closeModal();
   triggerToast(`Connecting to Bachs Gateway (${currency} ${amount})...`, 'info');
 
+  let errorDetail = 'Unable to connect to the payment gateway right now.';
+
   try {
     const res = await apiFetch('/payment/create-checkout', {
       method: 'POST',
@@ -871,46 +873,43 @@ async function initiateBachsCheckout(itemName, amount, currency, email, channelN
     const data = await res.json();
 
     if (res.ok && data.success && data.checkout_url) {
-      // Record purchase in user account
-      if (authState.user) {
-        if (!authState.user.purchases) authState.user.purchases = [];
-        authState.user.purchases.push({
-          itemName,
-          amount,
-          currency,
-          checkoutId: data.checkout_id,
-          purchasedAt: new Date().toISOString()
-        });
-        localStorage.setItem('yta_auth_session', JSON.stringify(authState.user));
-        renderUserPurchases();
-        updateAuthUI();
-      }
-
-      // Direct redirect to live Bachs hosted checkout
-      triggerToast(`Redirecting to secure Bachs Checkout...`, 'success');
+      triggerToast('Redirecting to secure Bachs Checkout...', 'success');
       setTimeout(() => {
         window.location.href = data.checkout_url;
       }, 400);
       return;
     }
+
+    if (data && data.message) {
+      errorDetail = data.message;
+    }
   } catch (err) {
-    console.warn('Backend payment route unavailable; using simulated Bachs confirmation:', err);
+    console.warn('Payment checkout error:', err);
   }
 
-  // Graceful fallback simulation if backend is not reachable
-  if (authState.user) {
-    if (!authState.user.purchases) authState.user.purchases = [];
-    authState.user.purchases.push({
-      itemName,
-      amount,
-      currency,
-      purchasedAt: new Date().toISOString()
-    });
-    localStorage.setItem('yta_auth_session', JSON.stringify(authState.user));
-    renderUserPurchases();
-    updateAuthUI();
-  }
-  triggerToast(`Payment successful via Bachs Gateway! Access granted for ${itemName}.`, 'success');
+  triggerToast(`Checkout unavailable: ${errorDetail}`, 'error');
+  const safeError = errorDetail
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  openModal(`
+    <div style="text-align: center; padding: 10px 4px;">
+      <div style="width: 58px; height: 58px; border-radius: 50%; background: #FEF2F2; color: #EF4444; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto;">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 8px; color: #111827;">Payment Checkout Unavailable</h3>
+      <p style="font-size: 14px; color: #4B5563; line-height: 1.5; margin-bottom: 18px;">
+        We could not start checkout for <strong>${itemName}</strong> (${currency} ${amount}). No charge was made.
+      </p>
+      <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 10px; padding: 12px 14px; margin-bottom: 20px; font-size: 13px; color: #991B1B; text-align: left;">
+        <strong>Gateway Response:</strong> ${safeError}
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <button class="btn-primary-red" onclick="closeModal(); openContactSupportModal();">Contact Support</button>
+        <button class="btn-outline-pill" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  `);
 }
 
 function checkPaymentCallback() {

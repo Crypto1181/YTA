@@ -5,7 +5,7 @@
 
 const User = require('../model/user.model');
 
-const BACHS_API_KEY = process.env.BACHS_API_KEY || 'sk_live_bb15dfb6_SMJmfDQpEVnTD7H7F8snUb8wLmlzgN76oYG3vB8tQRA';
+const BACHS_API_KEY = process.env.BACHS_API_KEY || '';
 const BACHS_BASE_URL = process.env.BACHS_API_URL || 'https://api.bachs.io/v1';
 
 // Supported Bachs Currencies
@@ -31,6 +31,13 @@ exports.getConfig = (req, res) => {
  */
 exports.createCheckoutSession = async (req, res) => {
   try {
+    if (!BACHS_API_KEY) {
+      return res.status(503).json({
+        success: false,
+        message: 'Payment gateway is not configured (missing BACHS_API_KEY).'
+      });
+    }
+
     const { itemId, itemName, itemType, amount, currency, email, name, channelName, returnUrl } = req.body;
 
     const selectedCurrency = currency && SUPPORTED_CURRENCIES.includes(currency.toUpperCase())
